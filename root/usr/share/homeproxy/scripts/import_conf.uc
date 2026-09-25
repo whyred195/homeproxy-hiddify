@@ -81,7 +81,9 @@ const port = (lc >= 0) ? substr(ep, lc + 1) : '';
 host = replace(host, '[', '');
 host = replace(host, ']', '');
 
-const isAWG = !!(iface.Jc || iface.Jmin || iface.Jmax || iface.H1);
+/* HeaderProtectionKey / I1 cover AWG 3.x / 2.x configs that ship without the
+ * classic Jc/Jmin/Jmax junk-packet parameters */
+const isAWG = !!(iface.Jc || iface.Jmin || iface.Jmax || iface.H1 || iface.I1 || iface.HeaderProtectionKey);
 
 let node = {
 	label: want_label || (isAWG ? 'AmneziaWG' : 'WireGuard'),
@@ -95,13 +97,21 @@ if (peer.PresharedKey) node.wireguard_pre_shared_key = peer.PresharedKey;
 if (iface.Address)     node.wireguard_local_address = map(split(iface.Address, ','), (a) => trim(a));
 if (iface.MTU)         node.wireguard_mtu = iface.MTU;
 
-if (isAWG) {
-	const awg = {
-		amnezia_jc: iface.Jc, amnezia_jmin: iface.Jmin, amnezia_jmax: iface.Jmax,
-		amnezia_s1: iface.S1, amnezia_s2: iface.S2, amnezia_s3: iface.S3, amnezia_s4: iface.S4,
-		amnezia_h1: iface.H1, amnezia_h2: iface.H2, amnezia_h3: iface.H3, amnezia_h4: iface.H4,
-		amnezia_i1: iface.I1, amnezia_i2: iface.I2, amnezia_i3: iface.I3, amnezia_i4: iface.I4, amnezia_i5: iface.I5
-	};
+	if (isAWG) {
+		const awg = {
+			amnezia_jc: iface.Jc, amnezia_jmin: iface.Jmin, amnezia_jmax: iface.Jmax,
+			amnezia_s1: iface.S1, amnezia_s2: iface.S2, amnezia_s3: iface.S3, amnezia_s4: iface.S4,
+			amnezia_h1: iface.H1, amnezia_h2: iface.H2, amnezia_h3: iface.H3, amnezia_h4: iface.H4,
+			amnezia_i1: iface.I1, amnezia_i2: iface.I2, amnezia_i3: iface.I3, amnezia_i4: iface.I4, amnezia_i5: iface.I5,
+			/* Amnezia 3.x */
+			amnezia_header_protection_key: iface.HeaderProtectionKey,
+			amnezia_content_padding_addition: iface.ContentPaddingAddition,
+			amnezia_rekey_after_time: iface.RekeyAfterTime,
+			amnezia_rekey_timeout: iface.RekeyTimeout,
+			amnezia_reject_after_time: iface.RejectAfterTime,
+			amnezia_keepalive_timeout: iface.KeepaliveTimeout,
+			amnezia_max_handshake_attempts: iface.MaxHandshakeAttempts
+		};
 	for (let k in awg)
 		if (awg[k] != null && awg[k] !== '')
 			node[k] = awg[k];

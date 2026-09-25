@@ -28,7 +28,7 @@ The **Import share links** button accepts one link per line. Supported schemes:
 
 Re:HomeProxy fully decodes Amnezia's `vpn://` share format (`base64url(qCompress(zlib JSON))`) right in the browser — no helper tool needed. It reads the container inside and recognises **both** Amnezia config types automatically:
 
-- **AmneziaWG** (`amnezia-awg` / `amnezia-awg2`) → an **AmneziaWG** node, with the full obfuscation parameter set (`Jc`, `Jmin`, `Jmax`, `S1`–`S4`, `H1`–`H4`, `I1`–`I5`), MTU, keepalive and keys. *Requires the sing-box-extended core* — see [Supported Protocols](Supported-Protocols-en).
+- **AmneziaWG** (`amnezia-awg` / `amnezia-awg2`) → an **AmneziaWG** node, with the full obfuscation parameter set (`Jc`, `Jmin`, `Jmax`, `S1`–`S4`, `H1`–`H4`, `I1`–`I5`, plus the Amnezia 3.x fields: header protection key, content padding, rekey/keepalive timings), MTU, keepalive and keys. *Requires the sing-box-extended core* (≥ v1.14.0-extended-2.7.0 for the 3.x fields) — see [Supported Protocols](Supported-Protocols-en).
 - **Xray** (`amnezia-xray`) → the Xray outbound inside is parsed into a node, including **VLESS + Reality/TLS** and the transport (`ws`, `grpc`, `xhttp`/`splithttp`, HTTPUpgrade) with their settings.
 
 So an Amnezia link works whether it carries an AmneziaWG or an Xray profile.
@@ -52,7 +52,7 @@ Two options apply during import:
 
 ## 2. Import a .conf file
 
-The **Import .conf** button reads a **WireGuard** or **AmneziaWG** `.conf` file and creates a node from it — handy for WARP/AmneziaWG configs you already have. (AmneziaWG nodes require the **sing-box-extended** core — see [Supported Protocols](Supported-Protocols-en).)
+The **Import .conf** button reads a **WireGuard** or **AmneziaWG** `.conf` file and creates a node from it — handy for WARP/AmneziaWG configs you already have. AmneziaWG obfuscation keys (`Jc`…`I5`, and the Amnezia 3.x `HeaderProtectionKey` / padding / timing keys) are picked up automatically. (AmneziaWG nodes require the **sing-box-extended** core — see [Supported Protocols](Supported-Protocols-en).)
 
 ---
 

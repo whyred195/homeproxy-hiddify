@@ -162,7 +162,15 @@ Modern VPN protocol with a minimal codebase and strong cryptography (Curve25519,
 These node types are available when you install **sing-box-extended** instead of hiddify-core (pick your core on the **Core Management** page). hiddify-core does **not** support them.
 
 ### AmneziaWG
-An obfuscated variant of WireGuard. It adds junk packets and randomised handshake headers (the `Jc`, `Jmin`, `Jmax`, `S1`, `S2`, `H1`–`H4`, `I1`–`I5` parameters) so that DPI systems which detect and block plain WireGuard no longer recognise the traffic. Set the obfuscation parameters to match your AmneziaWG server (or a Cloudflare WARP endpoint running AmneziaWG). Same fast Curve25519 / ChaCha20-Poly1305 cryptography as WireGuard, but the packets no longer look like WireGuard on the wire.
+An obfuscated variant of WireGuard. It adds junk packets and randomised handshake headers (the `Jc`, `Jmin`, `Jmax`, `S1`–`S4`, `H1`–`H4`, `I1`–`I5` parameters) so that DPI systems which detect and block plain WireGuard no longer recognise the traffic. Set the obfuscation parameters to match your AmneziaWG server (or a Cloudflare WARP endpoint running AmneziaWG). Same fast Curve25519 / ChaCha20-Poly1305 cryptography as WireGuard, but the packets no longer look like WireGuard on the wire.
+
+**Amnezia 3.1 parameters** (require sing-box-extended **≥ v1.14.0-extended-2.7.0**):
+
+- **Header protection key** — base64-encoded 32-byte key for ChaCha20 protection of packet headers. When it is enabled, use the compatibility values `H1`–`H4` = `1/2/3/4` and keep `S1`–`S4` ≥ 12.
+- **Content padding addition** — extra payload padding, a single value or a range (e.g. `50-100`).
+- **Rekey after time / Rekey timeout / Reject after time / Keepalive timeout / Max handshake attempts** — timing parameters in seconds, each a single value or a range (e.g. `100-140`, `4-6`, `160-200`, `8-12`, `15-20`). They randomise the timing pattern to counter statistical traffic analysis.
+
+The `vpn://` import and the **Import .conf** button fill in all of these fields automatically — see [Subscriptions](Subscriptions-en).
 
 ---
 

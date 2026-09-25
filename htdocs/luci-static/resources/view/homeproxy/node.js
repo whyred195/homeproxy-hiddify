@@ -89,6 +89,13 @@ async function parseVpnLink(uri) {
 			amnezia_i3: awg.I3 || null,
 			amnezia_i4: awg.I4 || null,
 			amnezia_i5: awg.I5 || null,
+			amnezia_header_protection_key: pickAwgField(cfg, 'HeaderProtectionKey', 'headerProtectionKey', 'header_protection_key'),
+			amnezia_content_padding_addition: pickAwgField(cfg, 'ContentPaddingAddition', 'contentPaddingAddition', 'content_padding_addition'),
+			amnezia_rekey_after_time: pickAwgField(cfg, 'RekeyAfterTime', 'rekeyAfterTime', 'rekey_after_time'),
+			amnezia_rekey_timeout: pickAwgField(cfg, 'RekeyTimeout', 'rekeyTimeout', 'rekey_timeout'),
+			amnezia_reject_after_time: pickAwgField(cfg, 'RejectAfterTime', 'rejectAfterTime', 'reject_after_time'),
+			amnezia_keepalive_timeout: pickAwgField(cfg, 'KeepaliveTimeout', 'keepaliveTimeout', 'keepalive_timeout'),
+			amnezia_max_handshake_attempts: pickAwgField(cfg, 'MaxHandshakeAttempts', 'maxHandshakeAttempts', 'max_handshake_attempts'),
 		};
 	}
 	case 'amnezia-xray': {
@@ -231,7 +238,9 @@ function parseWireGuardConf(text) {
 	const host = peer.Endpoint.slice(0, lastColon);
 	const port = peer.Endpoint.slice(lastColon + 1);
 
-	const isAWG = !!(iface.Jc || iface.Jmin || iface.Jmax || iface.H1);
+	/* HeaderProtectionKey / I1 cover AWG 3.x / 2.x configs that ship without
+	 * the classic Jc/Jmin/Jmax junk-packet parameters */
+	const isAWG = !!(iface.Jc || iface.Jmin || iface.Jmax || iface.H1 || iface.I1 || iface.HeaderProtectionKey);
 
 	const node = {
 		label:                   isAWG ? 'AmneziaWG' : 'WireGuard',
@@ -262,9 +271,44 @@ function parseWireGuardConf(text) {
 		node.amnezia_i3   = iface.I3   || null;
 		node.amnezia_i4   = iface.I4   || null;
 		node.amnezia_i5   = iface.I5   || null;
+		/* Amnezia 3.x */
+		node.amnezia_header_protection_key    = iface.HeaderProtectionKey   || null;
+		node.amnezia_content_padding_addition = iface.ContentPaddingAddition || null;
+		node.amnezia_rekey_after_time         = iface.RekeyAfterTime        || null;
+		node.amnezia_rekey_timeout            = iface.RekeyTimeout          || null;
+		node.amnezia_reject_after_time        = iface.RejectAfterTime       || null;
+		node.amnezia_keepalive_timeout        = iface.KeepaliveTimeout      || null;
+		node.amnezia_max_handshake_attempts   = iface.MaxHandshakeAttempts  || null;
 	}
 
 	return node;
+}
+
+/* AmneziaWG 3.x parameters appear under different key spellings depending on
+ * the source (Amnezia last_config JSON vs. snake_case exports); take the first
+ * variant that is present. Range values may arrive as [min, max] arrays —
+ * coerce them to the "N-M" string the editor and generator expect. */
+function pickAwgField(cfg, ...keys) {
+	for (let key of keys) {
+		const v = cfg[key];
+		if (v == null)
+			continue;
+		return Array.isArray(v) ? v.join('-') : v;
+	}
+
+	return null;
+}
+
+/* AmneziaWG 3.x timing/padding parameters are "N" or "N-M" ranges (seconds). */
+function validateAmneziaRange(section_id, value) {
+	if (!value)
+		return true;
+
+	const m = value.match(/^(\d+)(?:-(\d+))?$/);
+	if (!m)
+		return _('Expecting: %s').format('N or N-M');
+
+	return (!m[2] || parseInt(m[1], 10) <= parseInt(m[2], 10)) || _('Expecting: %s').format('N or N-M (N ≤ M)');
 }
 
 function parseShareLink(uri, features) {
@@ -1644,22 +1688,50 @@ function renderNodeSettings(section, data, features, main_node, routing_mode) {
 	o.depends('type', 'amneziawg');
 	o.modalonly = true;
 
-	o = s.option(form.Value, 'amnezia_j1', _('J1'));
+	/* Amnezia 3.x parameters start */
+	o = s.option(form.Value, 'amnezia_header_protection_key', _('Header protection key'),
+		_('Amnezia 3.x: base64-encoded 32-byte key for ChaCha20 header protection. Recommended: H1-H4 = 1/2/3/4 and S1-S4 ≥ 12 when enabled.'));
+	o.password = true;
 	o.depends('type', 'amneziawg');
+	o.validate = L.bind(hp.validateBase64Key, this, 44);
 	o.modalonly = true;
 
-	o = s.option(form.Value, 'amnezia_j2', _('J2'));
+	o = s.option(form.Value, 'amnezia_content_padding_addition', _('Content padding addition'),
+		_('Amnezia 3.x: extra payload padding, a single value or a range, e.g. 50-100.'));
 	o.depends('type', 'amneziawg');
+	o.validate = validateAmneziaRange;
 	o.modalonly = true;
 
-	o = s.option(form.Value, 'amnezia_j3', _('J3'));
+	o = s.option(form.Value, 'amnezia_rekey_after_time', _('Rekey after time'),
+		_('Amnezia 3.x: seconds after which the client initiates a re-handshake, e.g. 100-140.'));
 	o.depends('type', 'amneziawg');
+	o.validate = validateAmneziaRange;
 	o.modalonly = true;
 
-	o = s.option(form.Value, 'amnezia_itime', _('ITime'));
-	o.datatype = 'uinteger';
+	o = s.option(form.Value, 'amnezia_rekey_timeout', _('Rekey timeout'),
+		_('Amnezia 3.x: handshake retry delay in seconds, e.g. 4-6.'));
 	o.depends('type', 'amneziawg');
+	o.validate = validateAmneziaRange;
 	o.modalonly = true;
+
+	o = s.option(form.Value, 'amnezia_reject_after_time', _('Reject after time'),
+		_('Amnezia 3.x: seconds after which a re-handshake is forced, e.g. 160-200.'));
+	o.depends('type', 'amneziawg');
+	o.validate = validateAmneziaRange;
+	o.modalonly = true;
+
+	o = s.option(form.Value, 'amnezia_keepalive_timeout', _('Keepalive timeout'),
+		_('Amnezia 3.x: idle keepalive timeout in seconds, e.g. 8-12.'));
+	o.depends('type', 'amneziawg');
+	o.validate = validateAmneziaRange;
+	o.modalonly = true;
+
+	o = s.option(form.Value, 'amnezia_max_handshake_attempts', _('Max handshake attempts'),
+		_('Amnezia 3.x: handshake retry limit, e.g. 15-20.'));
+	o.depends('type', 'amneziawg');
+	o.validate = validateAmneziaRange;
+	o.modalonly = true;
+	/* Amnezia 3.x parameters end */
 	/* AmneziaWG config end */
 
 	/* Mux config start */

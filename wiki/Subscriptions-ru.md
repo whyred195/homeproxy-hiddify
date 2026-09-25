@@ -28,7 +28,7 @@
 
 Re:HomeProxy полностью декодирует share-формат Amnezia `vpn://` (`base64url(qCompress(zlib JSON))`) прямо в браузере — без вспомогательных утилит. Он читает контейнер внутри и автоматически распознаёт **оба** типа конфигов Amnezia:
 
-- **AmneziaWG** (`amnezia-awg` / `amnezia-awg2`) → узел **AmneziaWG** с полным набором параметров обфускации (`Jc`, `Jmin`, `Jmax`, `S1`–`S4`, `H1`–`H4`, `I1`–`I5`), MTU, keepalive и ключами. *Требует ядро sing-box-extended* — см. [Поддерживаемые протоколы](Supported-Protocols-ru).
+- **AmneziaWG** (`amnezia-awg` / `amnezia-awg2`) → узел **AmneziaWG** с полным набором параметров обфускации (`Jc`, `Jmin`, `Jmax`, `S1`–`S4`, `H1`–`H4`, `I1`–`I5`, а также поля Amnezia 3.x: ключ защиты заголовков, content padding, тайминги rekey/keepalive), MTU, keepalive и ключами. *Требует ядро sing-box-extended* (≥ v1.14.0-extended-2.7.0 для полей 3.x) — см. [Поддерживаемые протоколы](Supported-Protocols-ru).
 - **Xray** (`amnezia-xray`) → вложенный outbound Xray разбирается в узел, включая **VLESS + Reality/TLS** и транспорт (`ws`, `grpc`, `xhttp`/`splithttp`, HTTPUpgrade) с их настройками.
 
 Так что ссылка Amnezia работает, несёт ли она профиль AmneziaWG или Xray.
@@ -52,7 +52,7 @@ Re:HomeProxy полностью декодирует share-формат Amnezia 
 
 ## 2. Импорт файла .conf
 
-Кнопка **Импорт WG (.conf) файла** читает файл конфигурации **WireGuard** или **AmneziaWG** `.conf` и создаёт из него узел — удобно для готовых конфигов WARP/AmneziaWG. (Узлы AmneziaWG требуют ядро **sing-box-extended** — см. [Поддерживаемые протоколы](Supported-Protocols-ru).)
+Кнопка **Импорт WG (.conf) файла** читает файл конфигурации **WireGuard** или **AmneziaWG** `.conf` и создаёт из него узел — удобно для готовых конфигов WARP/AmneziaWG. Ключи обфускации AmneziaWG (`Jc`…`I5`, а также ключи Amnezia 3.x — `HeaderProtectionKey`, паддинг и тайминги) подхватываются автоматически. (Узлы AmneziaWG требуют ядро **sing-box-extended** — см. [Поддерживаемые протоколы](Supported-Protocols-ru).)
 
 ---
 

@@ -636,7 +636,7 @@ function buildCoreCard(core, coreInfo) {
 
 	const desc = isHiddify
 		? _('hiddify-core with sing-box syntax compatibility. Supports Hiddify App protocols and advanced features. Best compatibility with Hiddify Manager protocols. Does not support AmneziaWG.')
-		: _('Extended sing-box with additional protocols including AmneziaWG and TrustTunnel support. Created by shtorm-7.');
+		: _('Extended sing-box with additional protocols including AmneziaWG 3.1 and TrustTunnel support. Created by shtorm-7.');
 
 	let installed = coreData.installed || false;
 	let version   = coreData.version   || null;

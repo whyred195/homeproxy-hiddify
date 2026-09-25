@@ -13,7 +13,7 @@ Re:HomeProxy is **multi-core**: the LuCI app is the interface, and a separate **
 | Engine | Fork of sing-box by the Hiddify team | Fork of sing-box with extra build tags |
 | Footprint | Lighter; a **compact build** exists for small devices | Larger (~26 MB installed) |
 | Protocols | Hiddify-app protocols, TLS fragment, XHTTP, Mieru, etc. | The widest protocol set… |
-| **AmneziaWG / WARP** | ❌ **Not supported** | ✅ **Supported** |
+| **AmneziaWG (incl. 3.1) / WARP** | ❌ **Not supported** | ✅ **Supported** (3.1 params need ≥ v2.7.0) |
 
 **Rule of thumb:** if you need **AmneziaWG/WARP**, or want the broadest protocol coverage and have ~40 MB free, choose **sing-box-extended**. Otherwise **hiddify-core** is the lighter default and is the only one with a compact build for tight-storage routers.
 

@@ -208,7 +208,7 @@ function parse_singbox_outbound(ob, companion_map) {
 		break;
 	case 'wireguard':
 		config.wireguard_private_key = ob.private_key || null;
-		config.wireguard_public_key = ob.peer_public_key || null;
+		config.wireguard_peer_public_key = ob.peer_public_key || null;
 		config.wireguard_pre_shared_key = ob.pre_shared_key || null;
 		config.wireguard_local_address = ob.local_address || null;
 		config.wireguard_mtu = (ob.mtu != null) ? '' + ob.mtu : null;
