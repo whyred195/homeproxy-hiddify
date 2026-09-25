@@ -101,7 +101,7 @@ default_prerm' > "$TEMP_DIR/pre-deinstall"
 		--info "description:Re:HomeProxy - modern multi-core proxy platform. Fork of ImmortalWrt HomeProxy" \
 		--info "arch:noarch" \
 		--info "origin:$PKG_NAME" \
-		--info "url:https://github.com/1andrevich/homeproxy-hiddify" \
+		--info "url:https://github.com/whyred195/homeproxy-hiddify" \
 		--info "maintainer:1andrevich <1andrevich.recede274@passmail.net>" \
 		--script "post-install:$TEMP_DIR/post-install" \
 		--script "post-upgrade:$TEMP_DIR/post-upgrade" \
@@ -166,7 +166,7 @@ PYEOF
 		Depends: $IPK_DEPS
 		Conflicts: luci-app-homeproxy luci-app-homeproxy-hiddify
 		Replaces: luci-app-homeproxy luci-app-homeproxy-hiddify
-		Source: https://github.com/1andrevich/homeproxy-hiddify
+		Source: https://github.com/whyred195/homeproxy-hiddify
 		SourceName: $PKG_NAME
 		Section: luci
 		SourceDateEpoch: $PKG_SOURCE_DATE_EPOCH
@@ -233,7 +233,7 @@ if [ "$PKG_MGR" == "apk" ]; then
 		--info "description:Russian translation for luci-app-re-homeproxy" \
 		--info "arch:noarch" \
 		--info "origin:$I18N_PKG_NAME" \
-		--info "url:https://github.com/1andrevich/homeproxy-hiddify" \
+		--info "url:https://github.com/whyred195/homeproxy-hiddify" \
 		--info "maintainer:1andrevich <1andrevich.recede274@passmail.net>" \
 		--info "depends:$PKG_NAME" \
 		${APK_SIGN_KEY:+--sign-key "$APK_SIGN_KEY"} \
@@ -246,7 +246,7 @@ else
 		Package: $I18N_PKG_NAME
 		Version: $PKG_VERSION
 		Depends: $PKG_NAME
-		Source: https://github.com/1andrevich/homeproxy-hiddify
+		Source: https://github.com/whyred195/homeproxy-hiddify
 		SourceName: $I18N_PKG_NAME
 		Section: luci
 		SourceDateEpoch: $PKG_SOURCE_DATE_EPOCH
@@ -290,7 +290,7 @@ if [ "$PKG_MGR" == "apk" ]; then
 		--info "description:Chinese Simplified translation for luci-app-re-homeproxy" \
 		--info "arch:noarch" \
 		--info "origin:$I18N_ZH_PKG_NAME" \
-		--info "url:https://github.com/1andrevich/homeproxy-hiddify" \
+		--info "url:https://github.com/whyred195/homeproxy-hiddify" \
 		--info "maintainer:1andrevich <1andrevich.recede274@passmail.net>" \
 		--info "depends:$PKG_NAME" \
 		${APK_SIGN_KEY:+--sign-key "$APK_SIGN_KEY"} \
@@ -303,7 +303,7 @@ else
 		Package: $I18N_ZH_PKG_NAME
 		Version: $PKG_VERSION
 		Depends: $PKG_NAME
-		Source: https://github.com/1andrevich/homeproxy-hiddify
+		Source: https://github.com/whyred195/homeproxy-hiddify
 		SourceName: $I18N_ZH_PKG_NAME
 		Section: luci
 		SourceDateEpoch: $PKG_SOURCE_DATE_EPOCH
@@ -347,7 +347,7 @@ if [ "$PKG_MGR" == "apk" ]; then
 		--info "description:Farsi (Persian) translation for luci-app-re-homeproxy" \
 		--info "arch:noarch" \
 		--info "origin:$I18N_FA_PKG_NAME" \
-		--info "url:https://github.com/1andrevich/homeproxy-hiddify" \
+		--info "url:https://github.com/whyred195/homeproxy-hiddify" \
 		--info "maintainer:1andrevich <1andrevich.recede274@passmail.net>" \
 		--info "depends:$PKG_NAME" \
 		${APK_SIGN_KEY:+--sign-key "$APK_SIGN_KEY"} \
@@ -360,7 +360,7 @@ else
 		Package: $I18N_FA_PKG_NAME
 		Version: $PKG_VERSION
 		Depends: $PKG_NAME
-		Source: https://github.com/1andrevich/homeproxy-hiddify
+		Source: https://github.com/whyred195/homeproxy-hiddify
 		SourceName: $I18N_FA_PKG_NAME
 		Section: luci
 		SourceDateEpoch: $PKG_SOURCE_DATE_EPOCH

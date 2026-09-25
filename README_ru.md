@@ -39,13 +39,13 @@ Re:HomeProxy — многофункциональная система упра�
 Ставит LuCI-приложение, затем интерактивно проводит по выбору ядра прокси и опциональных ByeDPI / Zapret. Работает на APK (25.12+), opkg (24.10) и 23.05 legacy. Выполните по SSH на роутере:
 
 ```sh
-wget -qO- https://raw.githubusercontent.com/1andrevich/homeproxy-hiddify/master/install.sh | sh
+wget -qO- https://raw.githubusercontent.com/whyred195/homeproxy-hiddify/master/install.sh | sh
 ```
 
 При заблокированном/замедленном GitHub можно указать зеркало (важно: переменная ставится перед `sh`, а не перед `wget`):
 
 ```sh
-wget -qO- https://raw.githubusercontent.com/1andrevich/homeproxy-hiddify/master/install.sh | GH_MIRROR=https://your.mirror sh
+wget -qO- https://raw.githubusercontent.com/whyred195/homeproxy-hiddify/master/install.sh | GH_MIRROR=https://your.mirror sh
 ```
 
 Хотите вручную? Шаги по версиям — ниже.
@@ -55,9 +55,9 @@ wget -qO- https://raw.githubusercontent.com/1andrevich/homeproxy-hiddify/master/
 #### 1. Установка пакета Re:HomeProxy
 
 ```sh
-wget -O /tmp/homeproxy-hiddify.pub https://github.com/1andrevich/homeproxy-hiddify/releases/latest/download/homeproxy-hiddify.pub
+wget -O /tmp/homeproxy-hiddify.pub https://github.com/whyred195/homeproxy-hiddify/releases/latest/download/homeproxy-hiddify.pub
 cp /tmp/homeproxy-hiddify.pub /etc/apk/keys/
-wget -O /tmp/luci-app-re-homeproxy.apk "$(wget -qO- 'https://api.github.com/repos/1andrevich/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-app-re-homeproxy[^"]*\.apk' | head -1)"
+wget -O /tmp/luci-app-re-homeproxy.apk "$(wget -qO- 'https://api.github.com/repos/whyred195/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-app-re-homeproxy[^"]*\.apk' | head -1)"
 apk add /tmp/luci-app-re-homeproxy.apk
 ```
 
@@ -74,7 +74,7 @@ apk add /tmp/luci-app-re-homeproxy.apk
 #### 3. Установка языкового пакета RU
 
 ```sh
-wget -O /tmp/luci-i18n-homeproxy-ru.apk "$(wget -qO- 'https://api.github.com/repos/1andrevich/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-i18n-homeproxy-ru[^"]*\.apk' | head -1)"
+wget -O /tmp/luci-i18n-homeproxy-ru.apk "$(wget -qO- 'https://api.github.com/repos/whyred195/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-i18n-homeproxy-ru[^"]*\.apk' | head -1)"
 apk add /tmp/luci-i18n-homeproxy-ru.apk
 ```
 
@@ -85,7 +85,7 @@ apk add /tmp/luci-i18n-homeproxy-ru.apk
 #### 1. Установка пакета Re:HomeProxy
 
 ```sh
-wget -O /tmp/luci-app-re-homeproxy.ipk "$(wget -qO- 'https://api.github.com/repos/1andrevich/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-app-re-homeproxy[^"]*\.ipk' | head -1)"
+wget -O /tmp/luci-app-re-homeproxy.ipk "$(wget -qO- 'https://api.github.com/repos/whyred195/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-app-re-homeproxy[^"]*\.ipk' | head -1)"
 opkg install /tmp/luci-app-re-homeproxy.ipk
 ```
 
@@ -100,7 +100,7 @@ opkg install /tmp/luci-app-re-homeproxy.ipk
 #### 3. Установка языкового пакета RU
 
 ```sh
-wget -O /tmp/luci-i18n-homeproxy-ru.ipk "$(wget -qO- 'https://api.github.com/repos/1andrevich/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-i18n-homeproxy-ru[^"]*\.ipk' | head -1)"
+wget -O /tmp/luci-i18n-homeproxy-ru.ipk "$(wget -qO- 'https://api.github.com/repos/whyred195/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-i18n-homeproxy-ru[^"]*\.ipk' | head -1)"
 opkg install /tmp/luci-i18n-homeproxy-ru.ipk
 ```
 

@@ -291,7 +291,7 @@ if (action === 'info') {
 			 * throttled/blocked GitHub must NOT fail the install — the package already
 			 * arrived over HTTPS). Install trusted if the key is there, else untrusted. */
 			if (!access('/etc/apk/keys/homeproxy-hiddify.pub')) {
-				if (gh_fetch('https://github.com/1andrevich/homeproxy-hiddify/releases/latest/download/homeproxy-hiddify.pub', '/tmp/homeproxy-hiddify.pub', 20000) === 0)
+				if (gh_fetch('https://github.com/whyred195/homeproxy-hiddify/releases/latest/download/homeproxy-hiddify.pub', '/tmp/homeproxy-hiddify.pub', 20000) === 0)
 					system('[ -s /tmp/homeproxy-hiddify.pub ] && cp /tmp/homeproxy-hiddify.pub /etc/apk/keys/ 2>/dev/null; rm -f /tmp/homeproxy-hiddify.pub');
 			}
 			if (access('/etc/apk/keys/homeproxy-hiddify.pub'))

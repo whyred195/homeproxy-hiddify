@@ -70,7 +70,7 @@ Failed to allocate uclient context
 opkg update && opkg install libustream-openssl ca-certificates
 ```
 
-If `opkg` itself cannot reach the internet, download the `.ipk` or `.apk` file on a PC from the [Releases page](https://github.com/1andrevich/homeproxy-hiddify/releases) and transfer it to the router with `scp`.
+If `opkg` itself cannot reach the internet, download the `.ipk` or `.apk` file on a PC from the [Releases page](https://github.com/whyred195/homeproxy-hiddify/releases) and transfer it to the router with `scp`.
 
 ---
 

@@ -39,13 +39,13 @@ Optionally legacy build for 23.05 is available in Releases
 Installs the LuCI app, then interactively walks you through the proxy core and optional ByeDPI / Zapret. Works on APK (25.12+), opkg (24.10) and 23.05 legacy. Run over SSH on the router:
 
 ```sh
-wget -qO- https://raw.githubusercontent.com/1andrevich/homeproxy-hiddify/master/install.sh | sh
+wget -qO- https://raw.githubusercontent.com/whyred195/homeproxy-hiddify/master/install.sh | sh
 ```
 
 Behind a blocked/throttled GitHub, pass a mirror (note: the env var goes on `sh`, not `wget`):
 
 ```sh
-wget -qO- https://raw.githubusercontent.com/1andrevich/homeproxy-hiddify/master/install.sh | GH_MIRROR=https://your.mirror sh
+wget -qO- https://raw.githubusercontent.com/whyred195/homeproxy-hiddify/master/install.sh | GH_MIRROR=https://your.mirror sh
 ```
 
 Prefer to do it by hand? Follow the per-version steps below.
@@ -55,9 +55,9 @@ Prefer to do it by hand? Follow the per-version steps below.
 #### 1. Install *luci-app-re-homeproxy* package
 
 ```sh
-wget -O /tmp/homeproxy-hiddify.pub https://github.com/1andrevich/homeproxy-hiddify/releases/latest/download/homeproxy-hiddify.pub
+wget -O /tmp/homeproxy-hiddify.pub https://github.com/whyred195/homeproxy-hiddify/releases/latest/download/homeproxy-hiddify.pub
 cp /tmp/homeproxy-hiddify.pub /etc/apk/keys/
-wget -O /tmp/luci-app-re-homeproxy.apk "$(wget -qO- 'https://api.github.com/repos/1andrevich/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-app-re-homeproxy[^"]*\.apk' | head -1)"
+wget -O /tmp/luci-app-re-homeproxy.apk "$(wget -qO- 'https://api.github.com/repos/whyred195/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-app-re-homeproxy[^"]*\.apk' | head -1)"
 apk add /tmp/luci-app-re-homeproxy.apk
 ```
 
@@ -76,7 +76,7 @@ Open **Services → Re:HomeProxy → Core & Tools** and install what you need �
 #### 1. Install *luci-app-re-homeproxy* package
 
 ```sh
-wget -O /tmp/luci-app-re-homeproxy.ipk "$(wget -qO- 'https://api.github.com/repos/1andrevich/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-app-re-homeproxy[^"]*\.ipk' | head -1)"
+wget -O /tmp/luci-app-re-homeproxy.ipk "$(wget -qO- 'https://api.github.com/repos/whyred195/homeproxy-hiddify/releases' | grep -o 'https://github\.com/[^"]*luci-app-re-homeproxy[^"]*\.ipk' | head -1)"
 opkg install /tmp/luci-app-re-homeproxy.ipk
 ```
 
@@ -135,7 +135,7 @@ if [ "$EXT" = apk ]; then apk add /tmp/zapret2.apk; else opkg install /tmp/zapre
 
 ### Optional 
 
-Installation of [Russian Language Pack](https://github.com/1andrevich/homeproxy-hiddify/blob/master/README_ru.md#3-%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-%D1%8F%D0%B7%D1%8B%D0%BA%D0%BE%D0%B2%D0%BE%D0%B3%D0%BE-%D0%BF%D0%B0%D0%BA%D0%B5%D1%82%D0%B0-ru-1)
+Installation of [Russian Language Pack](https://github.com/whyred195/homeproxy-hiddify/blob/master/README_ru.md#3-%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-%D1%8F%D0%B7%D1%8B%D0%BA%D0%BE%D0%B2%D0%BE%D0%B3%D0%BE-%D0%BF%D0%B0%D0%BA%D0%B5%D1%82%D0%B0-ru-1)
 
 If using "Custom JSON" — see the **[Custom JSON Config](../../wiki/Custom-JSON-Config-en)** wiki page for full details.
 

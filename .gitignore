@@ -1,0 +1,7 @@
+.zcode/
+AGENTS.md
+.zcodeignore
+.github/*.apk
+.github/*.ipk
+.github/*.pub
+.github/legacy/

@@ -1,6 +1,6 @@
 #!/bin/sh
 # Установщик Re:HomeProxy для OpenWrt (в одном скрипте: APK / opkg / 23.05 legacy)
-# https://github.com/1andrevich/homeproxy-hiddify
+# https://github.com/whyred195/homeproxy-hiddify
 #
 # Вручную ставится только LuCI-приложение + ключ подписи, а ядро, ByeDPI и Zapret
 # устанавливаются через собственный бэкенд приложения (core_mgmt.uc + rpcd-объект
@@ -9,9 +9,9 @@
 # проверенной логикой, что и графический интерфейс.
 #
 # Установка (одной строкой — ввод читается из /dev/tty, пайп остаётся интерактивным):
-#   wget -qO- https://raw.githubusercontent.com/1andrevich/homeproxy-hiddify/master/install.sh | sh
+#   wget -qO- https://raw.githubusercontent.com/whyred195/homeproxy-hiddify/master/install.sh | sh
 # Либо в два шага:
-#   wget -O /tmp/install.sh https://raw.githubusercontent.com/1andrevich/homeproxy-hiddify/master/install.sh
+#   wget -O /tmp/install.sh https://raw.githubusercontent.com/whyred195/homeproxy-hiddify/master/install.sh
 #   sh /tmp/install.sh
 #
 # При заблокированном/замедленном GitHub можно указать зеркало:
@@ -71,12 +71,12 @@ info "Версия: OpenWrt $VER  |  Архитектура: $ARCH  |  Мене�
 ok "[1/5] Устанавливаю LuCI-приложение Re:HomeProxy..."
 if [ "$PM" = apk ]; then
 	if [ ! -f /etc/apk/keys/homeproxy-hiddify.pub ]; then
-		dl "https://github.com/1andrevich/homeproxy-hiddify/releases/latest/download/homeproxy-hiddify.pub" /tmp/hp.pub \
+		dl "https://github.com/whyred195/homeproxy-hiddify/releases/latest/download/homeproxy-hiddify.pub" /tmp/hp.pub \
 			&& cp /tmp/hp.pub /etc/apk/keys/ && rm -f /tmp/hp.pub && ok "  ключ подписи добавлен в доверенные" \
 			|| warn "  не удалось скачать ключ подписи — поставлю без проверки подписи"
 	fi
 fi
-APPURL=$(api 'https://api.github.com/repos/1andrevich/homeproxy-hiddify/releases' \
+APPURL=$(api 'https://api.github.com/repos/whyred195/homeproxy-hiddify/releases' \
 	| grep -o "https://github\.com/[^\"]*luci-app-re-homeproxy[^\"]*${SUFFIX}\.${EXT}" | head -1)
 [ -n "$APPURL" ] || die "Не нашёл пакет luci-app-re-homeproxy${SUFFIX}.${EXT} (GitHub заблокирован? попробуйте GH_MIRROR=...)."
 dl "$APPURL" /tmp/app.$EXT || die "Не удалось скачать приложение (попробуйте GH_MIRROR=...)."
@@ -88,25 +88,34 @@ fi
 rm -f /tmp/app.$EXT
 ok "  приложение установлено."
 
-# Русский язык интерфейса (по умолчанию — да)
-ask "  Установить пакет русского языка? [Y/n] (по умолчанию Y):"
+# Язык интерфейса приложения
+echo "    1) ru     — русский (по умолчанию)"
+echo "    2) zh-cn — 简体中文"
+echo "    3) fa     — فارسی"
+echo "    4) en     — без перевода"
+ask "  Язык интерфейса? [1-4] (по умолчанию 1):"
 case "$REPLY" in
-	n|N|no|NO|нет|Нет|н|Н) ;;  # отказ — пропускаем
-	*)
-		info "  ставлю русский язык LuCI..."
-		# базовый перевод интерфейса LuCI (из фида, best-effort)
-		if [ "$PM" = apk ]; then apk add luci-i18n-base-ru >/dev/null 2>&1; else opkg install luci-i18n-base-ru >/dev/null 2>&1; fi
-		# перевод самого приложения (из релиза homeproxy)
-		LURL=$(api 'https://api.github.com/repos/1andrevich/homeproxy-hiddify/releases' \
-			| grep -o "https://github\.com/[^\"]*luci-i18n-homeproxy-ru[^\"]*\.${EXT}" | head -1)
-		if [ -n "$LURL" ] && dl "$LURL" /tmp/i18n.$EXT; then
-			if [ "$PM" = apk ]; then apk add /tmp/i18n.$EXT 2>/dev/null || apk add --allow-untrusted /tmp/i18n.$EXT; \
-			else opkg install /tmp/i18n.$EXT; fi
-		else warn "  перевод приложения не найден — пропускаю"; fi
-		rm -f /tmp/i18n.$EXT
-		uci set luci.main.lang=ru; uci commit luci
-		ok "  русский язык установлен" ;;
+	2) ILANG=zh-cn ;;
+	3) ILANG=fa ;;
+	4) ILANG= ;;
+	*) ILANG=ru ;;
 esac
+
+if [ -n "$ILANG" ]; then
+	info "  ставлю язык $ILANG..."
+	# базовый перевод интерфейса LuCI (из фида, best-effort)
+	if [ "$PM" = apk ]; then apk add luci-i18n-base-$ILANG >/dev/null 2>&1; else opkg install luci-i18n-base-$ILANG >/dev/null 2>&1; fi
+	# перевод самого приложения (из релиза homeproxy)
+	LURL=$(api 'https://api.github.com/repos/whyred195/homeproxy-hiddify/releases' \
+		| grep -o "https://github\.com/[^\"]*luci-i18n-homeproxy-${ILANG}[^\"]*\.${EXT}" | head -1)
+	if [ -n "$LURL" ] && dl "$LURL" /tmp/i18n.$EXT; then
+		if [ "$PM" = apk ]; then apk add /tmp/i18n.$EXT 2>/dev/null || apk add --allow-untrusted /tmp/i18n.$EXT; \
+		else opkg install /tmp/i18n.$EXT; fi
+	else warn "  перевод приложения не найден — пропускаю"; fi
+	rm -f /tmp/i18n.$EXT
+	uci set luci.main.lang=$ILANG; uci commit luci
+	ok "  язык $ILANG установлен"
+fi
 
 # Прописываем зеркало в бэкенд, чтобы делегированные загрузки тоже его использовали
 if [ -n "$GH_MIRROR" ]; then uci set homeproxy.config.github_mirror="$GH_MIRROR"; uci commit homeproxy; fi
@@ -118,8 +127,9 @@ CM=/usr/share/homeproxy/scripts/core_mgmt.uc
 
 # ------------------------------------------------------- 2. ядро прокси (обязательно)
 ok "[2/5] Ядро прокси (обязательно — выберите одно)"
-echo "    1) hiddify-core       (по умолчанию; на малой флеш-памяти выберет компактную сборку)"
-echo "    2) sing-box-extended  (AmneziaWG / WARP, самый широкий набор протоколов)"
+echo "    1) hiddify-core       (по умолчанию; компактная сборка на малой флеш-памяти; без AmneziaWG)"
+echo "    2) sing-box-extended  (AmneziaWG 3.1 / WARP, самый широкий набор протоколов;"
+echo "                          параметры Amnezia 3.1 требуют ядро версии не ниже v2.7.0)"
 ask "  Выбор [1/2] (по умолчанию 1):"
 case "$REPLY" in 2) CORE=singbox ;; *) CORE=hiddify ;; esac
 
