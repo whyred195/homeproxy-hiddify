@@ -1,15 +1,9 @@
 [**Русский 🇷🇺**](README_ru.md) / [**English**](README.md)
 
-<p align="center">
-  <a href="https://t.me/one_andrevich"><img src="https://img.shields.io/badge/Telegram-Join-2CA5E0?style=flat-square&logo=telegram&logoColor=white" alt="Telegram"></a>
-  <a href="https://ko-fi.com/D1D11SQNQD"><img src="https://img.shields.io/badge/Ko--fi-Support-FF5E5B?style=flat-square&logo=ko-fi&logoColor=white" alt="Ko-fi"></a>
-  <a href="https://nowpayments.io/donation?api_key=decbeb76-30f8-4c6d-ba40-2d2dec7fd888"><img src="https://img.shields.io/badge/Crypto-Donate-2EBE74?style=flat-square&logo=bitcoin&logoColor=white" alt="Crypto donate"></a>
-</p>
-
 # Re:HomeProxy
 
 Современная многоядерная прокси-платформа на основе [hiddify-core](https://github.com/hiddify/hiddify-core) и [sing-box-extended](https://github.com/shtorm-7/sing-box-extended).
-Форк [ImmortalWrt HomeProxy](https://github.com/immortalwrt/homeproxy).
+Форк [ImmortalWrt HomeProxy](https://github.com/immortalwrt/homeproxy) с поддержкой **AmneziaWG 3.1**.
 
 ## Обзор
 
@@ -18,7 +12,7 @@ Re:HomeProxy — многофункциональная система упра�
 ## Ключевые возможности
 
 - **Многоядерный движок** — работа на **hiddify-core** или **sing-box-extended** на ваш выбор. Встроенная страница **Управление ядром** сама установит и обновит ядро и автоматически подберёт подходящую сборку под свободное место (включая компактную сборку для устройств с малым объёмом памяти).
-- **Широкая поддержка протоколов** — Naive, Mieru, Hysteria, SOCKS, Shadowsocks, ShadowTLS, Trojan, VLESS (XHTTP), VMess, WireGuard, **AmneziaWG / WARP** (sing-box-extended), SSH и другие.
+- **Широкая поддержка протоколов** — Naive, Mieru, Hysteria, SOCKS, Shadowsocks, ShadowTLS, Trojan, VLESS (XHTTP), VMess, WireGuard, **AmneziaWG 3.1 / WARP** (sing-box-extended), SSH и другие.
 - **Два встроенных движка обхода DPI** — разблокировка сайтов и снятие троттлинга (например, YouTube, Discord) **без какой-либо VPN-подписки**:
   - **ByeDPI** ([hufrea/byedpi](https://github.com/hufrea/byedpi)) — рассинхронизирующий прокси на уровне SOCKS, 47 готовых пресетов стратегий и **тестер стратегий** по нескольким сайтам, который показывает, какая настройка реально работает у вашего провайдера.
   - **Zapret 2** ([bol-van/zapret2](https://github.com/bol-van/zapret2), nfqws2) — рассинхронизация на уровне пакетов через NFQUEUE, искажает рукопожатие «на лету». Назначается в правилах маршрутизации (например, отправить через него только YouTube/Discord), с подобранными пресетами, опциональным обходом для голоса Discord и собственным тестером.
@@ -73,7 +67,7 @@ apk add /tmp/luci-app-re-homeproxy.apk
 
 Откройте **Службы → Re:HomeProxy → Ядро и службы** и установите нужное — установщик сам подберёт сборку под свободное место:
 
-- **Ядро прокси** *(обязательно, выберите одно)* — [hiddify-core](https://github.com/hiddify/hiddify-core) (по умолчанию) или [sing-box-extended](https://github.com/shtorm-7/sing-box-extended) (добавляет AmneziaWG / WARP и самый широкий набор протоколов). См. **[Управление ядром](../../wiki/Core-Management-ru)**.
+- **Ядро прокси** *(обязательно, выберите одно)* — [hiddify-core](https://github.com/hiddify/hiddify-core) (по умолчанию) или [sing-box-extended](https://github.com/shtorm-7/sing-box-extended) (добавляет AmneziaWG 3.1 / WARP и самый широкий набор протоколов). См. **[Управление ядром](../../wiki/Core-Management-ru)**.
 - **ByeDPI** *(опционально)* — обход DPI на уровне SOCKS, снимает троттлинг без VPN, 47 пресетов и встроенный тестер стратегий. См. **[ByeDPI](../../wiki/ByeDPI-ru)**.
 - **Zapret 2** *(опционально)* — обход DPI на уровне пакетов (nfqws2), назначается в правилах маршрутизации, с подобранными пресетами и опциональным обходом для голоса Discord. См. **[Zapret](../../wiki/Zapret-ru)**.
 
@@ -99,7 +93,7 @@ opkg install /tmp/luci-app-re-homeproxy.ipk
 
 Откройте **Службы → Re:HomeProxy → Ядро и службы** и установите нужное — установщик сам подберёт сборку под свободное место:
 
-- **Ядро прокси** *(обязательно, выберите одно)* — [hiddify-core](https://github.com/hiddify/hiddify-core) (по умолчанию) или [sing-box-extended](https://github.com/shtorm-7/sing-box-extended) (добавляет AmneziaWG / WARP и самый широкий набор протоколов). См. **[Управление ядром](../../wiki/Core-Management-ru)**.
+- **Ядро прокси** *(обязательно, выберите одно)* — [hiddify-core](https://github.com/hiddify/hiddify-core) (по умолчанию) или [sing-box-extended](https://github.com/shtorm-7/sing-box-extended) (добавляет AmneziaWG 3.1 / WARP и самый широкий набор протоколов). См. **[Управление ядром](../../wiki/Core-Management-ru)**.
 - **ByeDPI** *(опционально)* — обход DPI на уровне SOCKS, снимает троттлинг без VPN, 47 пресетов и встроенный тестер стратегий. См. **[ByeDPI](../../wiki/ByeDPI-ru)**.
 - **Zapret 2** *(опционально)* — обход DPI на уровне пакетов (nfqws2), назначается в правилах маршрутизации, с подобранными пресетами и опциональным обходом для голоса Discord. См. **[Zapret](../../wiki/Zapret-ru)**.
 
@@ -131,7 +125,7 @@ if [ "$EXT" = apk ]; then apk add kmod-nft-tproxy kmod-tun; else opkg install km
 wget -O /tmp/hiddify-core.$EXT "https://github.com/1andrevich/hiddify-core/releases/latest/download/hiddify-core_${ARCH}.${EXT}"
 if [ "$EXT" = apk ]; then apk add /tmp/hiddify-core.apk; else opkg install --force-reinstall /tmp/hiddify-core.ipk; fi
 
-# ...или sing-box-extended (AmneziaWG / WARP, самый широкий набор протоколов; без подписи)
+# ...или sing-box-extended (AmneziaWG 3.1 / WARP, самый широкий набор протоколов; без подписи)
 URL=$(wget -qO- 'https://api.github.com/repos/shtorm-7/sing-box-extended/releases/latest' | grep -o "https://github\.com/[^\"]*${ARCH}[^\"]*\.${EXT}" | head -1)
 wget -O /tmp/sing-box-extended.$EXT "$URL"
 if [ "$EXT" = apk ]; then apk add --allow-untrusted /tmp/sing-box-extended.apk; else opkg install /tmp/sing-box-extended.ipk; fi
@@ -200,7 +194,7 @@ Re:HomeProxy опирается на работу множества вышес�
 
 **Протоколы** — реализованы ядрами выше (см. [Поддерживаемые протоколы](../../wiki/Supported-Protocols-ru)):
 
-Naive, Mieru, Hysteria/Hysteria2, TUIC, SOCKS, Shadowsocks/Shadowsocks 2022, ShadowTLS, AnyTLS, Trojan, VLESS (Reality, XHTTP), VMess, WireGuard, AmneziaWG/WARP, SSH.
+Naive, Mieru, Hysteria/Hysteria2, TUIC, SOCKS, Shadowsocks/Shadowsocks 2022, ShadowTLS, AnyTLS, Trojan, VLESS (Reality, XHTTP), VMess, WireGuard, AmneziaWG 3.1/WARP, SSH.
 
 **Списки маршрутизации**
 - [Re:Filter](https://github.com/1andrevich/re-filter) — список доменов + IP по реестру РКН
