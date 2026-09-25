@@ -110,7 +110,10 @@ if (iface.MTU)         node.wireguard_mtu = iface.MTU;
 			amnezia_rekey_timeout: iface.RekeyTimeout,
 			amnezia_reject_after_time: iface.RejectAfterTime,
 			amnezia_keepalive_timeout: iface.KeepaliveTimeout,
-			amnezia_max_handshake_attempts: iface.MaxHandshakeAttempts
+			amnezia_max_handshake_attempts: iface.MaxHandshakeAttempts,
+			/* Amnezia 3.1 booleans: INI "on"/"true"/"1" → UCI Flag '1' */
+			amnezia_random_trailers: (iface.RandomTrailers == 'on' || iface.RandomTrailers == 'true' || iface.RandomTrailers == '1') ? '1' : null,
+			amnezia_disable_cookies: (iface.DisableCookies == 'on' || iface.DisableCookies == 'true' || iface.DisableCookies == '1') ? '1' : null
 		};
 	for (let k in awg)
 		if (awg[k] != null && awg[k] !== '')

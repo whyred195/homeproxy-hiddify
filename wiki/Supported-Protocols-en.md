@@ -169,6 +169,7 @@ An obfuscated variant of WireGuard. It adds junk packets and randomised handshak
 - **Header protection key** — base64-encoded 32-byte key for ChaCha20 protection of packet headers. When it is enabled, use the compatibility values `H1`–`H4` = `1/2/3/4` and keep `S1`–`S4` ≥ 12.
 - **Content padding addition** — extra payload padding, a single value or a range (e.g. `50-100`).
 - **Rekey after time / Rekey timeout / Reject after time / Keepalive timeout / Max handshake attempts** — timing parameters in seconds, each a single value or a range (e.g. `100-140`, `4-6`, `160-200`, `8-12`, `15-20`). They randomise the timing pattern to counter statistical traffic analysis.
+- **Random trailers / Disable cookies** — Amnezia 3.1 booleans mirroring the server's `RandomTrailers` and `DisableCookies`. Random trailers append random trailing bytes to handshake packets and let the client accept such packets; without the option enabled the client silently drops the server's trailer-carrying replies and the handshake never completes. Requires a core with `random_trailers` support (sing-box-extended with PR [#155](https://github.com/shtorm-7/sing-box-extended/pull/155)).
 
 The `vpn://` import and the **Import .conf** button fill in all of these fields automatically — see [Subscriptions](Subscriptions-en).
 

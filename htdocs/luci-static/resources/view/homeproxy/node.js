@@ -96,6 +96,8 @@ async function parseVpnLink(uri) {
 			amnezia_reject_after_time: pickAwgField(cfg, 'RejectAfterTime', 'rejectAfterTime', 'reject_after_time'),
 			amnezia_keepalive_timeout: pickAwgField(cfg, 'KeepaliveTimeout', 'keepaliveTimeout', 'keepalive_timeout'),
 			amnezia_max_handshake_attempts: pickAwgField(cfg, 'MaxHandshakeAttempts', 'maxHandshakeAttempts', 'max_handshake_attempts'),
+			amnezia_random_trailers: pickAwgBool(cfg, 'RandomTrailers', 'randomTrailers', 'random_trailers'),
+			amnezia_disable_cookies: pickAwgBool(cfg, 'DisableCookies', 'disableCookies', 'disable_cookies'),
 		};
 	}
 	case 'amnezia-xray': {
@@ -278,8 +280,10 @@ function parseWireGuardConf(text) {
 		node.amnezia_rekey_timeout            = iface.RekeyTimeout          || null;
 		node.amnezia_reject_after_time        = iface.RejectAfterTime       || null;
 		node.amnezia_keepalive_timeout        = iface.KeepaliveTimeout      || null;
-		node.amnezia_max_handshake_attempts   = iface.MaxHandshakeAttempts  || null;
-	}
+	node.amnezia_max_handshake_attempts   = iface.MaxHandshakeAttempts  || null;
+	node.amnezia_random_trailers          = pickAwgBool(iface, 'RandomTrailers');
+	node.amnezia_disable_cookies          = pickAwgBool(iface, 'DisableCookies');
+}
 
 	return node;
 }
@@ -294,6 +298,24 @@ function pickAwgField(cfg, ...keys) {
 		if (v == null)
 			continue;
 		return Array.isArray(v) ? v.join('-') : v;
+	}
+
+	return null;
+}
+
+/* Boolean AmneziaWG flags arrive as JSON true/false or INI "on"/"off";
+ * normalize to the UCI Flag value '1', or null (option absent = off). */
+function pickAwgBool(cfg, ...keys) {
+	for (let key of keys) {
+		const v = cfg[key];
+		if (v == null)
+			continue;
+		if (v === true)
+			return '1';
+		if (v === false)
+			return null;
+		const s = String(v).toLowerCase();
+		return (s == 'on' || s == 'true' || s == '1') ? '1' : null;
 	}
 
 	return null;
@@ -1726,12 +1748,22 @@ function renderNodeSettings(section, data, features, main_node, routing_mode) {
 	o.validate = validateAmneziaRange;
 	o.modalonly = true;
 
-	o = s.option(form.Value, 'amnezia_max_handshake_attempts', _('Max handshake attempts'),
-		_('Amnezia 3.x: handshake retry limit, e.g. 15-20.'));
-	o.depends('type', 'amneziawg');
-	o.validate = validateAmneziaRange;
-	o.modalonly = true;
-	/* Amnezia 3.x parameters end */
+o = s.option(form.Value, 'amnezia_max_handshake_attempts', _('Max handshake attempts'),
+	_('Amnezia 3.x: handshake retry limit, e.g. 15-20.'));
+o.depends('type', 'amneziawg');
+o.validate = validateAmneziaRange;
+o.modalonly = true;
+
+o = s.option(form.Flag, 'amnezia_random_trailers', _('Random trailers'),
+	_('Amnezia 3.1: send handshake packets with random trailing bytes and accept such packets from the peer. Must match the server (RandomTrailers). Requires a core that supports it.'));
+o.depends('type', 'amneziawg');
+o.modalonly = true;
+
+o = s.option(form.Flag, 'amnezia_disable_cookies', _('Disable cookies'),
+	_('Amnezia 3.1: disable WireGuard cookie protection under load. Should match the server (DisableCookies).'));
+o.depends('type', 'amneziawg');
+o.modalonly = true;
+/* Amnezia 3.x parameters end */
 	/* AmneziaWG config end */
 
 	/* Mux config start */

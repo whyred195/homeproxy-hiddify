@@ -322,6 +322,9 @@ function generate_endpoint(node) {
 			reject_after_time: node.amnezia_reject_after_time || null,
 			keepalive_timeout: node.amnezia_keepalive_timeout || null,
 			max_handshake_attempts: node.amnezia_max_handshake_attempts || null,
+			/* Amnezia 3.1 booleans (require a core with random_trailers support) */
+			random_trailers: strToBool(node.amnezia_random_trailers),
+			disable_cookies: strToBool(node.amnezia_disable_cookies),
 		} : null,
 		tcp_fast_open: strToBool(node.tcp_fast_open),
 		tcp_multi_path: strToBool(node.tcp_multi_path),
